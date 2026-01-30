@@ -1,0 +1,31 @@
+@use './variables'as *;
+
+
+@mixin animation($name,
+  $duration: 2s,
+  $timing: ease,
+  $fill: both) {
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-timing-function: $timing;
+  animation-fill-mode: $fill;
+}
+
+@mixin animate($name, $duration: 1s, $delay: 0s) {
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-delay: $delay;
+  animation-fill-mode: both;
+}
+
+@mixin font($family, $weight: regular) {
+  font-family: $family;
+
+  @if map-has-key($font-weights, $weight) {
+    font-weight: map-get($font-weights, $weight);
+  }
+
+  @else {
+    font-weight: $weight;
+  }
+}

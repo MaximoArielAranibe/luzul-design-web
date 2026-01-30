@@ -1,0 +1,13 @@
+.slow {
+  animation-duration: 1.4s;
+}
+
+.more-slow{
+  animation-duration: 4s;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}

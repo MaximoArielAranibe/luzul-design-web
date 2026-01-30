@@ -1,0 +1,78 @@
+/* ============================
+   GLOBAL RESET / BASE FIXES
+   ============================ */
+
+/* Box model consistente */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Elimina márgenes default */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Listas limpias */
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Links sin estilos raros */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Imágenes responsivas */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Formularios consistentes */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Botones sin estilos del browser */
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Evita overflow horizontal */
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
+}

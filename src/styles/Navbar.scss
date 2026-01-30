@@ -1,0 +1,179 @@
+@use "../styles/variables" as *;
+
+/* ============================
+   NAVBAR
+============================ */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $navbar-height;
+
+  background: rgba($black, 0.85);
+  backdrop-filter: blur(8px);
+
+  z-index: $z-header;
+}
+
+/* Container */
+
+.navbar__container {
+  max-width: 1300px;
+  margin: auto;
+  padding: 1rem 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 45px;
+    object-fit: contain;
+  }
+}
+
+/* Desktop Menu */
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  a {
+    color: $text-light;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    position: relative;
+
+    transition: color $transition-base;
+
+    &:hover {
+      color: $gold;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+
+      width: 0%;
+      height: 1px;
+
+      background: $gold;
+      transition: width $transition-base;
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
+
+  .btn-primary {
+    padding: 0.6rem 1.4rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Hamburger */
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
+
+  span {
+    width: 24px;
+    height: 2px;
+
+    background: $white;
+
+    transition: all 0.3s ease;
+  }
+
+  &.active {
+    span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+    }
+
+    span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+  }
+}
+
+/* Mobile Menu */
+
+.navbar__mobile {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  width: 100%;
+
+  background: $bg-dark;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  max-height: 0;
+  overflow: hidden;
+
+  transition: max-height 0.4s ease;
+
+  a {
+    padding: 1rem 0;
+    width: 100%;
+
+    text-align: center;
+    color: $text-light;
+
+    border-bottom: 1px solid rgba($white, 0.05);
+
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba($gold, 0.1);
+      color: $gold;
+    }
+  }
+
+  &.show {
+    max-height: 400px;
+  }
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+
+@media (max-width: 900px) {
+  .navbar__menu {
+    display: none;
+  }
+
+  .navbar__toggle {
+    display: flex;
+  }
+}

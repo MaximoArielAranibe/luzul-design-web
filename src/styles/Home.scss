@@ -1,0 +1,314 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+/* ============================
+   ROOT
+============================ */
+
+.home {
+  background: $bg-dark;
+  color: $text-light;
+  font-family: $font-base;
+  font-family: $font-mona;
+  width: 100%;
+}
+
+/* ============================
+   SECTION HEADER
+============================ */
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+
+    @include font($font-hubot, bold);
+  }
+
+  p {
+    color: $text-muted;
+    max-width: 600px;
+    margin: auto;
+  }
+
+  a {
+    @include font($font-hubot, bold);
+  }
+}
+
+/* ============================
+   BUTTONS
+============================ */
+
+.btn-primary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0.9rem 2.4rem;
+  min-height: 48px;
+
+  border: 1px solid $gold;
+  color: $gold;
+  font-weight: 500;
+
+  border-radius: 4px;
+
+  transition: all 0.25s ease;
+
+  &:hover {
+    background: $gold;
+    color: $black;
+    transform: translateY(-2px);
+  }
+}
+
+/* ============================
+   HERO
+============================ */
+
+.hero {
+  height: calc(100vh + $navbar-height);
+  position: relative;
+
+  background: url("../../public/decoracion-elefante.jpeg")
+    center / cover no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2rem;
+
+  &-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba($black, 0.6);
+  }
+
+  &-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 720px;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    gap: 1rem;
+
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      letter-spacing: 2px;
+      color: $white;
+
+      @include font($font-mona, extrabold);
+    }
+
+    p {
+      max-width: 520px;
+
+      color: $text-light;
+      line-height: 1.6;
+
+      @include font($font-hubot, light);
+    }
+
+    .button__contact {
+      max-width: 280px;
+      margin-top: 1rem;
+      text-transform: uppercase;
+      @include font($font-mona, bold);
+    }
+  }
+}
+
+/* ============================
+   ABOUT
+============================ */
+
+.about {
+  padding: clamp(3rem, 8vw, 5rem) 8%;
+
+  &-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+
+    align-items: center;
+  }
+
+  &-image {
+    img {
+      width: 100%;
+      border-radius: 14px;
+      object-fit: cover;
+    }
+  }
+
+  &-text {
+    h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+
+      @include font($font-mona, bold);
+    }
+
+    p {
+      color: $text-muted;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+/* ============================
+   SERVICES
+============================ */
+
+.services {
+  padding: clamp(3rem, 8vw, 5rem) 8%;
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+  }
+}
+
+.service-card {
+  background: $card-bg;
+  padding: 2rem;
+
+  border-radius: 16px;
+  text-align: center;
+
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba($black, 0.3);
+  }
+
+  h4 {
+    color: $gold;
+    margin-bottom: 1rem;
+
+    @include font($font-hubot, medium);
+  }
+
+  p {
+    color: $text-muted;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+/* ============================
+   PORTFOLIO
+============================ */
+
+.portfolio {
+  padding: clamp(3rem, 8vw, 5rem) 8%;
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+
+    img {
+      width: 100%;
+      height: 260px;
+
+      object-fit: cover;
+
+      border-radius: 14px;
+
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        filter: brightness(1.1);
+      }
+    }
+  }
+}
+
+/* ============================
+   TESTIMONIALS
+============================ */
+
+.testimonials {
+  padding: clamp(3rem, 8vw, 5rem) 8%;
+  background: $bg-section;
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+  }
+}
+
+.testimonial {
+  background: $card-bg;
+  padding: 2rem;
+
+  border-radius: 16px;
+
+  p {
+    font-style: italic;
+    margin-bottom: 1rem;
+    color: $text-light;
+  }
+
+  h5 {
+    color: $gold;
+    font-weight: 500;
+  }
+}
+
+/* ============================
+   CONTACT
+============================ */
+
+.contact {
+  padding: clamp(3rem, 8vw, 5rem) 8%;
+  text-align: center;
+
+  &-info {
+    max-width: 600px;
+    margin: auto;
+
+    p {
+      color: $text-muted;
+      margin-bottom: 0.7rem;
+    }
+  }
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 0 1rem;
+  }
+
+  .hero-content h1 {
+    letter-spacing: 1px;
+  }
+
+  .button__contact {
+    width: 100%;
+    max-width: 320px;
+  }
+}

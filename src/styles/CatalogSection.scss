@@ -1,0 +1,91 @@
+@use "../styles/variables" as *;
+
+/* ============================
+   CATALOG CTA
+============================ */
+
+.catalog-cta {
+  padding: clamp(4rem, 10vw, 6rem) 2rem;
+
+  background: linear-gradient(
+    180deg,
+    $bg-dark 0%,
+    $bg-section 100%
+  );
+
+  text-align: center;
+}
+
+.catalog-cta__container {
+  max-width: 800px;
+  margin: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 1.5rem;
+}
+
+/* Title */
+
+.catalog-cta h2 {
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  letter-spacing: 1px;
+
+  color: $white;
+}
+
+/* Text */
+
+.catalog-cta p {
+  max-width: 600px;
+
+  color: $text-muted;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+/* Button */
+
+.catalog-cta__button {
+  margin-top: 1rem;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 220px;
+  min-height: 52px;
+
+  padding: 0.8rem 2.2rem;
+
+  border: 1px solid $gold;
+  border-radius: $radius-sm;
+
+  color: $gold;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  transition: all $transition-base;
+
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: $gold;
+
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: transform 0.3s ease;
+
+    z-index: -1;
+  }
+
+}
