@@ -285,38 +285,6 @@
    TESTIMONIALS
 ============================ */
 
-.testimonials {
-  padding: clamp(3rem, 8vw, 5rem) 8%;
-  background: $bg-section;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-
-  gap: 2rem;
-
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.testimonial {
-  background: $card-bg;
-  padding: 2rem;
-
-  border-radius: 16px;
-
-  p {
-    font-style: italic;
-    margin-bottom: 1rem;
-    color: $text-light;
-  }
-
-  h5 {
-    color: $gold;
-    font-weight: 500;
-  }
-}
 
 /* ============================
    CONTACT
@@ -352,9 +320,6 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .testimonials-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 /* Desktop */
@@ -379,10 +344,6 @@
 
   .portfolio-grid img{
     height: 320px;
-  }
-
-  .testimonials-grid {
-    grid-template-columns: repeat(3, 1fr);
   }
 }
 

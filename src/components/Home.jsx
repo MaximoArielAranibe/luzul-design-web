@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import CatalogSection from "./CatalogSection";
 import ServicesSection from "./ServicesSection";
 import ShowcaseVideo from "./ShowcaseVideo";
+import Testimonials from "./Testimonials";
 
 const Home = () => {
   const [showButton, setShowButton] = useState(false);
@@ -109,33 +110,9 @@ const Home = () => {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="testimonials" id="testimonios">
 
-        <div className="section-header">
-          <h2>Clientes Satisfechos</h2>
-          <p>Opiniones reales</p>
-        </div>
+      <Testimonials />
 
-        <div className="testimonials-grid">
-
-          <div className="testimonial">
-            <p>“Buen gusto y elegancia. Los mejores artículos para decorar.”</p>
-            <h5>Maricel E.</h5>
-          </div>
-
-          <div className="testimonial">
-            <p>“Excelente grupo de trabajo y ambientaciones de primer nivel.”</p>
-            <h5>Bruno E.</h5>
-          </div>
-
-          <div className="testimonial">
-            <p>“Gran variedad, precios accesibles y atención especializada.”</p>
-            <h5>Ana L. P.</h5>
-          </div>
-
-        </div>
-
-      </section>
 
       {/* ABOUT */}
       <section className="about" id="sobrenosotros">
