@@ -45,9 +45,9 @@
 
 /* Grid */
 
-.services-section__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+.services-section__grid{
+  display: flex;
+  flex-flow: column;
   gap: 2.5rem;
 }
 
@@ -108,10 +108,16 @@
    RESPONSIVE
 ============================ */
 
-@media (max-width: 600px) {
+@media (min-width: 600px) {
   .service-box {
     flex-direction: column;
     text-align: center;
     align-items: center;
   }
+
+  .services-section__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
 }

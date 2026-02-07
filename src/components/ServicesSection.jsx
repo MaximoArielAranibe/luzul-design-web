@@ -16,11 +16,11 @@ import "../styles/ServicesSection.scss";
 import { FaTent } from "react-icons/fa6";
 
 const services = [
-  {
-    icon: <FaUtensils />,
-    title: "Catering",
-    text: "Gastronomía propia elaborada con productos de primera calidad.",
-  },
+  /*   {
+      icon: <FaUtensils />,
+      title: "Catering",
+      text: "Gastronomía propia elaborada con productos de primera calidad.",
+    }, */
   {
     icon: <FaHeadphones />,
     title: "DJ, sonido e iluminación",
@@ -57,14 +57,14 @@ const services = [
     text: "Oficina céntrica para seguimiento.",
   },
   {
-    icon: <FaListAlt />,
-    title: "Otros recomendados",
-    text: "Cabina, pista LED, shows y más.",
-  },
-  {
     icon: <FaTent />,
     title: "Carpas beduinas",
     text: "Ideal para stands.",
+  },
+  {
+    icon: <FaListAlt />,
+    title: "Otros recomendados",
+    text: "Cabina, pista LED, shows y más.",
   },
 ];
 
