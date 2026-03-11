@@ -1,0 +1,57 @@
+/* =========================
+   BASE = MOBILE
+========================= */
+
+.blob {
+  position: absolute;
+  width: 90vw;
+  height: auto;
+
+  top: 0.4rem;
+  right: -40%;
+
+  transform: rotate(-90deg);
+}
+
+.blob.inverted {
+  bottom: 2rem;
+  left: -40%;
+  right: auto;
+  top: auto;
+
+  transform: rotate(90deg);
+}
+
+/* =========================
+   TABLET / DESKTOP
+========================= */
+
+@media (min-width: 768px) {
+  .blob {
+    width: 70vw;
+    max-width: 420px;
+
+    top: 0;
+    right: -20%;
+  }
+
+  .blob.inverted {
+    bottom: -2.4rem;
+    left: -20%;
+  }
+}
+
+@media (min-width: 1024px){
+  .blob {
+    width: 70vw;
+    max-width: 600px;
+
+    top: -70px;
+    right: -250px;
+  }
+
+  .blob.inverted {
+    bottom: -70px;
+    left: -250px;
+  }
+}

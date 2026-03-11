@@ -1,128 +1,132 @@
-
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 
+/* ============================
+   TESTIMONIALS
+============================ */
+
 .testimonials {
-  padding: clamp(4rem, 8vw, 6rem) 8%;
-  background: linear-gradient(
-    to bottom,
-    $bg-section,
-    rgba($black, 0.85)
-  );
+  padding: clamp(4rem, 8vw, 6.5rem) 8%;
+
 }
+
+/* ============================
+   GRID
+============================ */
 
 .testimonials-grid {
   display: grid;
   grid-template-columns: 1fr;
 
-  gap: 2.5rem;
+  gap: clamp(2rem, 4vw, 3rem);
 
   max-width: 1200px;
-  margin: 3rem auto 0;
+  margin: 3.5rem auto 0;
 }
+
+/* ============================
+   CARD
+============================ */
 
 .testimonial {
   position: relative;
 
   background: linear-gradient(
     145deg,
-    lighten($card-bg, 3%),
-    darken($card-bg, 3%)
+    rgba($card-bg, 0.95),
+    rgba($card-bg, 0.85)
   );
 
-  padding: 2.5rem 2rem;
+  padding: clamp(2rem, 4vw, 2.6rem);
 
-  border-radius: 20px;
+  border-radius: 22px;
 
   text-align: center;
 
-  transition: all 0.35s ease;
+  border: 1px solid rgba($white, 0.04);
 
-  box-shadow: 0 6px 20px rgba($black, 0.25);
+  /* External + internal shadow */
+
+  box-shadow:
+    0 10px 25px rgba($black, 0.28),
+    inset 0 0 18px rgba($white, 0.03),
+    inset 0 0 0 1px rgba($gold, 0.04);
+
+  /* Animation base */
+
+  opacity: 0;
+  transform: translateY(40px) scale(0.97);
+
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease,
+    box-shadow 0.3s ease;
+
+  /* Quote */
 
   &::before {
     content: "“";
+
     position: absolute;
 
-    top: -10px;
-    left: 20px;
+    top: -14px;
+    left: 22px;
 
-    font-size: 4rem;
-    color: rgba($gold, 0.25);
+    font-size: 4.5rem;
+    line-height: 1;
+
+    color: rgba($gold, 0.22);
 
     font-family: serif;
+
+    pointer-events: none;
   }
 
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 18px 35px rgba($black, 0.35);
+  /* On view animation */
+
+  &.in-view {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
+
+  /* Hover */
+
+  &:hover {
+    transform: translateY(-8px) scale(1.01);
+
+    box-shadow:
+      0 22px 45px rgba($black, 0.35),
+      inset 0 0 22px rgba($gold, 0.08),
+      inset 0 0 0 1px rgba($gold, 0.1);
+  }
+
+  /* Text */
 
   p {
     font-style: italic;
-    margin-bottom: 1.5rem;
 
-    color: $text-light;
+    margin-bottom: 1.7rem;
 
-    line-height: 1.7;
-    font-size: 1rem;
+    color: rgba($text-light, 0.92);
+
+    line-height: 1.75;
+    font-size: 1.02rem;
+
+    max-width: 90%;
+    margin-inline: auto;
   }
+
+  /* Author */
 
   h5 {
     color: $gold;
+
     font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-}
 
-/* ============================
-   CONTACT
-============================ */
+    letter-spacing: 0.6px;
+    font-size: 0.95rem;
 
-.contact {
-  padding: clamp(4rem, 8vw, 6rem) 8%;
-
-  text-align: center;
-
-  background: linear-gradient(
-    to top,
-    rgba($black, 0.9),
-    transparent
-  );
-}
-
-.contact-info {
-  max-width: 620px;
-
-  margin: 3rem auto 0;
-
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  p {
-    color: $text-muted;
-    font-size: 1rem;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    gap: 0.5rem;
-  }
-
-  .btn-primary {
-    margin-top: 2rem;
-
-    align-self: center;
-
-    min-width: 260px;
-
-    box-shadow: 0 8px 25px rgba($gold, 0.25);
-
-    &:hover {
-      box-shadow: 0 12px 35px rgba($gold, 0.4);
-    }
+    opacity: 0.95;
   }
 }
 
@@ -130,72 +134,24 @@
    RESPONSIVE
 ============================ */
 
-/* Tablet */
-
 @media (min-width: 600px) {
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .portfolio-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .testimonials-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Desktop */
-
-@media (min-width: 1024px) {
-  .section-header h2 {
-    font-size: 40px;
-  }
-
-  .section-header p {
-    font-size: 18px;
-    font-style: italic;
-  }
-
-  .services-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .portfolio-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .portfolio-grid img {
-    height: 320px;
-  }
-
   .testimonials-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-
-  .contact-info {
-    gap: 1.3rem;
-  }
 }
 
-/* Mobile Fixes */
 
 @media (max-width: 768px) {
-  .hero {
-    background-attachment: scroll;
-  }
-
-  .hero-content {
-    padding: 0 1rem;
-  }
-
-  .button__contact {
-    width: 100%;
-    max-width: 320px;
-  }
-
   .testimonial {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.6rem;
+
+    &::before {
+      font-size: 3.5rem;
+      top: -10px;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
   }
 }

@@ -1,4 +1,6 @@
 import "../styles/ShowcaseVideo.scss";
+import React from 'react';
+
 
 const ShowcaseVideo = () => {
   return (

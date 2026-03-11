@@ -11,6 +11,7 @@ import {
   FaBuilding,
   FaListAlt,
 } from "react-icons/fa";
+import React from "react";
 
 import "../styles/ServicesSection.scss";
 import { FaTent } from "react-icons/fa6";
