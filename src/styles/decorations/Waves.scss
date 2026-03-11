@@ -1,0 +1,30 @@
+.about-wave {
+  position: absolute;
+  left: 0;
+
+  width: 100%;
+  line-height: 0;
+
+  z-index: 2;
+}
+
+.about-wave.top {
+  top: 0;
+}
+
+.about-wave.bottom {
+  bottom: 0;
+}
+
+/* SVG */
+
+.wave {
+  width: 100%;
+  height: 150px;
+
+  display: block;
+}
+
+.wave.inverted {
+  transform: rotate(180deg);
+}

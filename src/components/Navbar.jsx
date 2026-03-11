@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "../styles/Navbar.scss";
 import logo from "../assets/logo-blanco.png";
+import React from 'react';
+
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -11,16 +13,21 @@ const Navbar = () => {
       <div className="navbar__container">
         {/* Logo */}
         <Link to="/" className="navbar__logo">
-          <img src={logo} alt="Luzul Design Logo" />
+          <span className="logo-wrapper">
+
+            <img src={logo} alt="Luzul Design Logo" />
+          </span>
         </Link>
 
         {/* Desktop Menu */}
         <nav className="navbar__menu">
-          <a href="#inicio">Inicio</a>
+          <Link className="active" to="/">Inicio</Link>
           <a href="/catalogo-luzul.pdf" target="_blank" rel="noopener noreferrer">Catálogo</a>
-          <a href="#sobrenosotros">Nosotros</a>
           <a href="#servicios">Servicios</a>
+          <a href="#portfolio">Portfolio</a>
           <a href="#testimonios">Testimonios</a>
+          <a href="#sobrenosotros">Nosotros</a>
+          <a href="/videos">Videos</a>
           <a href="#contacto" className="btn-primary">Contacto</a>
         </nav>
 

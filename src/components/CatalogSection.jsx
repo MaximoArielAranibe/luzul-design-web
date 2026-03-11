@@ -1,7 +1,11 @@
-import '../styles/CatalogSection.scss'
+import '../styles/CatalogSection.scss';
+import React from 'react';
+import Blob from './decorations/Blob';
+
 const CatalogSection = () => {
   return (
     <section className="catalog-cta" id="catalogo">
+      <Blob />
       <div className="catalog-cta__container">
 
         <h2>Descubrí Nuestro Catálogo</h2>
@@ -21,6 +25,7 @@ const CatalogSection = () => {
         </a>
 
       </div>
+      <Blob inverted/>
     </section>
   );
 };

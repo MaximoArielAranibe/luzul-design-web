@@ -1,0 +1,50 @@
+.portfolio {
+  background: linear-gradient(0deg, #0f0f0f 0%, #141414 100%),
+    linear-gradient(180deg, #0f0f0f 0%, #141414 100%);
+  padding: clamp(3rem, 8vw, 5rem) 8%;
+
+  padding-top: 5rem;
+
+  &-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    gap: 1.5rem;
+
+    max-width: 1200px;
+    margin: 0 auto;
+
+
+
+    img {
+      width: 100%;
+      height: 260px;
+
+      object-fit: cover;
+
+      border-radius: 14px;
+
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        transform: scale(1.03);
+      }
+    }
+  }
+}
+
+@media (min-width: 600px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    .portfolio-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .portfolio-grid img {
+      height: 320px;
+    }
+  }
+}
