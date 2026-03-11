@@ -1,0 +1,187 @@
+/* ============================
+   SECTION WRAPPER
+============================ */
+
+.videos-section {
+  width: 100%;
+  min-height: 100%;
+  margin-top: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  place-content: center;
+}
+
+/* ============================
+   CONTAINER
+============================ */
+
+.videos-container {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+
+
+  display: grid;
+  gap: 2rem;
+
+  grid-template-areas:
+    "v1 v2 v3 v4"
+    "v1 v2 v3 v4"
+    "v5 v6 v7 v8"
+    "v5 v6 v7 v8";
+
+    grid-template-columns: repeat(4, 1fr);
+/*     grid-template-rows: repeat(2, 38vh);
+ */    grid-auto-rows: 300px;
+/* si hay más videos se agregan filas */
+}
+
+/* ============================
+   MEDIA CARD (video + image)
+============================ */
+
+.media-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #000;
+  aspect-ratio: 9 / 22;
+
+  opacity: 0;
+  transform: translateY(40px);
+  filter: blur(8px);
+
+  animation: mediaReveal 0.8s ease forwards;
+
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+  video,
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+
+    transition: transform 0.6s ease;
+  }
+
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+
+    video,
+    img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+/* ============================
+   OVERLAY
+============================ */
+
+.media-overlay {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 2;
+
+  h3 {
+    color: white;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+}
+
+/* ============================
+   MODAL
+============================ */
+
+.video-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+}
+
+.video-modal-inner {
+  position: relative;
+  width: 90%;
+  max-width: 1200px;
+}
+
+.video-modal-inner video {
+  width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #000;
+}
+
+.modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+/* ============================
+   ENTRY ANIMATION
+============================ */
+
+@keyframes mediaReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+
+@media (max-width: 1100px) {
+  .videos-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .videos-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 500px) {
+  .videos-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.media-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.65),
+    rgba(0,0,0,0) 60%
+  );
+}
