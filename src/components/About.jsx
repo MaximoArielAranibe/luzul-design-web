@@ -39,7 +39,7 @@ const About = () => {
       {/* Wave arriba */}
       <Waves backgroundColor="#0f0f0f" pos="top" />
 
-      <div className="about-content">
+      <div className="about-content" >
         <div
           className="about-image"
           onClick={handleOpen}
@@ -49,6 +49,7 @@ const About = () => {
             if (e.key === "Enter") handleOpen();
           }}
           aria-label="Ver imagen ampliada"
+
         >
           <img
             src={IMAGE_SRC}

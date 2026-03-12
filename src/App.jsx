@@ -4,11 +4,15 @@ import Navbar from './components/Navbar';
 import React from 'react';
 import WhatsAppButton from './components/WhatsappButton';
 import ShowVideos from './components/ShowVideos';
+import ScrollToTop from './utils/ScrollToTop';
 
 function App() {
 
   return (
     <BrowserRouter>
+
+    <ScrollToTop />
+
       <Navbar />
       <WhatsAppButton />
       <Routes>

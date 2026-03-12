@@ -1,15 +1,28 @@
 /* ============================
    SECTION WRAPPER
 ============================ */
+@use "../variables"as *;
+
 
 .videos-section {
   width: 100%;
-  min-height: 100%;
-  margin-top: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  place-content: center;
+  height: 100%;
+  margin-top: 105px;
+  margin-bottom: 4rem;
+}
+
+.videos-section-text {
+  color: $text-soft;
+  padding-bottom: 2rem;
+  padding-top: 0.8rem;
+  margin-left: 4rem;
+  font-family: $font-hubot;
+  font-size: clamp(24px, 4rem, 2rem);
+  font-weight: 300;
+
+  strong {
+    color: $text-light;
+  }
 }
 
 /* ============================
@@ -17,37 +30,27 @@
 ============================ */
 
 .videos-container {
-  position: relative;
   width: 100%;
-  max-width: 1400px;
-
-
+  height: 100%;
+  padding: 0 4rem;
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
   gap: 2rem;
-
-  grid-template-areas:
-    "v1 v2 v3 v4"
-    "v1 v2 v3 v4"
-    "v5 v6 v7 v8"
-    "v5 v6 v7 v8";
-
-    grid-template-columns: repeat(4, 1fr);
-/*     grid-template-rows: repeat(2, 38vh);
- */    grid-auto-rows: 300px;
-/* si hay más videos se agregan filas */
+  grid-template-rows: repeat(auto-fit);
 }
 
 /* ============================
-   MEDIA CARD (video + image)
+   MEDIA CARD
 ============================ */
 
 .media-card {
-  position: relative;
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
   background: #000;
-  aspect-ratio: 9 / 22;
+
+  height: 75vh;
+  width: 100%;
 
   opacity: 0;
   transform: translateY(40px);
@@ -66,7 +69,6 @@
 
     transition: transform 0.6s ease;
   }
-
 
   &:hover {
     transform: translateY(-6px);
@@ -97,6 +99,18 @@
   }
 }
 
+/* gradient overlay */
+
+.media-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0) 60%);
+}
+
 /* ============================
    MODAL
 ============================ */
@@ -119,7 +133,8 @@
   max-width: 1200px;
 }
 
-.video-modal-inner video {
+.video-modal-inner video,
+.video-modal-inner img {
   width: 100%;
   max-height: 85vh;
   object-fit: contain;
@@ -152,36 +167,55 @@
 }
 
 /* ============================
-   RESPONSIVE
+   TABLET
 ============================ */
 
 @media (max-width: 1100px) {
+
   .videos-container {
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    /* 2 videos exactos por pantalla */
   }
+
+  .media-card {
+    height: 30vh;
+  }
+
 }
 
-@media (max-width: 800px) {
-  .videos-container {
-    grid-template-columns: repeat(2, 1fr);
+/* ============================
+   MOBILE
+============================ */
+
+@media (max-width: 768px) {
+
+  .videos-section-text {
+    font-size: 20px;
+    color: $text-soft;
+    padding-bottom: 1rem;
+    padding-top: 0.8rem;
+    margin-left: 1.4rem;
+    font-family: $font-hubot;
+    font-weight: 300;
+
+    strong {
+      color: $text-light;
+    }
   }
 
-}
-
-@media (max-width: 500px) {
   .videos-container {
-    grid-template-columns: 1fr;
+
+    grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    /* 2 videos exactos por pantalla */
   }
-}
 
-.media-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
+  .media-card {
+    height: 30vh;
+  }
 
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0.65),
-    rgba(0,0,0,0) 60%
-  );
 }

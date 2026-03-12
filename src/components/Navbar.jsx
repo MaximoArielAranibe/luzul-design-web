@@ -1,34 +1,98 @@
 import { useState } from "react";
 import "../styles/Navbar.scss";
 import logo from "../assets/logo-blanco.png";
-import React from 'react';
+import React from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+const navItems = [
+  { label: "Servicios", id: "servicios" },
+  { label: "Catálogo", id: "catalogo" },
+  { label: "Portfolio", id: "portfolio" },
+  { label: "Testimonios", id: "testimonios" },
+  { label: "Nosotros", id: "sobrenosotros" }
+];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleSectionClick = (e, id) => {
+    e.preventDefault();
+    setOpen(false);
+
+    if (location.pathname !== "/") {
+      navigate("/");
+
+      setTimeout(() => {
+        scrollToSection(id);
+      }, 100);
+    } else {
+      scrollToSection(id);
+    }
+  };
+
+  const handleHomeClick = (e) => {
+    setOpen(false);
+
+    if (location.pathname === "/") {
+      e.preventDefault();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <header className="navbar">
       <div className="navbar__container">
-        {/* Logo */}
-        <Link to="/" className="navbar__logo">
-          <span className="logo-wrapper">
 
+        {/* Logo */}
+        <Link to="/" className="navbar__logo" onClick={handleHomeClick}>
+          <span className="logo-wrapper">
             <img src={logo} alt="Luzul Design Logo" />
           </span>
         </Link>
 
         {/* Desktop Menu */}
         <nav className="navbar__menu">
-          <Link className="active" to="/">Inicio</Link>
-          <a href="/catalogo-luzul.pdf" target="_blank" rel="noopener noreferrer">Catálogo</a>
-          <a href="#servicios">Servicios</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#testimonios">Testimonios</a>
-          <a href="#sobrenosotros">Nosotros</a>
-          <a href="/videos">Videos</a>
-          <a href="#contacto" className="btn-primary">Contacto</a>
+
+          <Link className="active" to="/" onClick={handleHomeClick}>
+            Inicio
+          </Link>
+
+          {navItems.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={(e) => handleSectionClick(e, item.id)}
+            >
+              {item.label}
+            </a>
+          ))}
+
+          <Link to="/videos">Videos</Link>
+
+          <a
+            href="#contacto"
+            className="btn-primary"
+            onClick={(e) => handleSectionClick(e, "contacto")}
+          >
+            Contacto
+          </a>
+
         </nav>
 
         {/* Mobile Button */}
@@ -44,13 +108,28 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div className={`navbar__mobile ${open ? "show" : ""}`}>
-        <a onClick={() => setOpen(false)} href="#home">Inicio</a>
-        <a href="catalogo-luzul.pdf" target="_blank" rel="noopener noreferrer">Catálogo</a>
 
-        <a onClick={() => setOpen(false)} href="#sobrenosotros">Nosotros</a>
-        <a onClick={() => setOpen(false)} href="#servicios">Servicios</a>
-        <a onClick={() => setOpen(false)} href="#testimonios">Testimonios</a>
-        <a onClick={() => setOpen(false)} href="#contacto">Contacto</a>
+        {navItems.map((item) => (
+          <a
+            key={item.id}
+            href={`#${item.id}`}
+            onClick={(e) => handleSectionClick(e, item.id)}
+          >
+            {item.label}
+          </a>
+        ))}
+
+        <Link to="/videos" onClick={() => setOpen(false)}>
+          Videos
+        </Link>
+
+        <a
+          href="#contacto"
+          onClick={(e) => handleSectionClick(e, "contacto")}
+        >
+          Contacto
+        </a>
+
       </div>
     </header>
   );

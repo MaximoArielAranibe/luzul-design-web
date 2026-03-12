@@ -5,15 +5,15 @@ import "../styles/pages/ShowVideos.scss";
 const videos = [
   {
     id: 1,
-    preview: "/luzul-video-preview-1.mp4",
+    preview: "/luzul-video-1.mp4",
     full: "/luzul-video-1.mp4",
     title: "Brand Intro",
-    span: "large",
+    span: "normal",
     isVideo: true
   },
   {
     id: 2,
-    preview: "/luzul-video-preview-2.mp4",
+    preview: "/luzul-video-2.mp4",
     full: "/luzul-video-2.mp4",
     title: "Ambientación Evento",
     span: "normal",
@@ -21,7 +21,7 @@ const videos = [
   },
   {
     id: 3,
-    preview: "/luzul-video-preview-3.mp4",
+    preview: "/luzul-video-3.mp4",
     full: "/luzul-video-3.mp4",
     title: "Montaje Escenografía",
     span: "tall",
@@ -29,19 +29,43 @@ const videos = [
   },
   {
     id: 4,
-    preview: "/luzul-video-preview-4.mp4",
-    full: "/luzul-video-4.mp4",
-    title: "Detalle Técnico",
+    preview: "/nuevas-3.jpeg",
+    title: "XV",
     span: "normal",
-    isVideo: true
+    isVideo: false
   },
   {
     id: 5,
-    preview: "/nuevas-3.jpeg",
-    title: "Imagen",
+    preview: "/flores-3.jpg",
+    full: "/luzul-video-4.mp4",
+    title: "Decoración flores",
     span: "normal",
     isVideo: false
-  }
+  },
+  {
+    id: 6,
+    preview: "/luzul-sillones-blancos.jpeg",
+    title: "Sillones Blancos",
+    span: "normal",
+    isVideo: false
+  },
+  {
+    id: 7,
+    preview: "/flores-2.jpg",
+    full: "/luzul-video-4.mp4",
+    title: "Decoración Flores",
+    span: "normal",
+    isVideo: false
+  },
+  {
+    id: 8,
+    preview: "/luzul-evento-xv.jpeg",
+    full: "/luzul-video-4.mp4",
+    title: "XV",
+    span: "normal",
+    isVideo: false
+  },
+
 ];
 
 const ShowVideos = () => {
@@ -108,6 +132,7 @@ const ShowVideos = () => {
   return (
     <>
       <section className="videos-section">
+        <h3 className="videos-section-text">Muestrario de <strong>videos</strong></h3>
         <div className="videos-container">
           {videos.map((video, index) => {
             const { id, preview, title, isVideo, span } = video;
@@ -116,7 +141,7 @@ const ShowVideos = () => {
               <article
                 key={id}
                 className={`media-card ${span}`}
-                style={{ animationDelay: `${index * 0.12}s`, gridArea: `v${index}` }}
+                style={{ animationDelay: `${index * 0.12}s` }}
                 onMouseEnter={() => isVideo && handleHoverPlay(id)}
                 onMouseLeave={() => isVideo && handleHoverPause(id)}
                 onClick={() => setActiveVideo(video)}
@@ -133,6 +158,7 @@ const ShowVideos = () => {
                   />
                 ) : (
                   <img src={preview} alt={title} loading="lazy" />
+
                 )}
 
                 <div className="media-overlay">

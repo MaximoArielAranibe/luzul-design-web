@@ -38,7 +38,7 @@ const Carousel = ({
   if (!slides.length) return null;
 
   return (
-    <div className="carousel-wrapper">
+    <section className="carousel-wrapper">
       <div className="carousel">
         <div
           className="carousel__track"
@@ -87,7 +87,7 @@ const Carousel = ({
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

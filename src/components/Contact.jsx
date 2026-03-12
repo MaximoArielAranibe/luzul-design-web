@@ -23,12 +23,13 @@ const Contact = () => {
     const message = form.message.trim();
 
     const text = `
-  Hola \u{1F44B}
+  Hola Lucas\u{1F44B}
 
   Mi nombre es ${name}
-  Tel: ${phone}
+  Mi teléfono es: ${phone}
 
   Me comunico a través de su página web, mi mensaje es el siguiente:
+
   ${message}
     `.trim();
 
@@ -45,7 +46,7 @@ const Contact = () => {
     <section className="contact" id="contacto">
       {/* Header */}
       <div className="contact__header">
-        <h2>Contacto <strong style={{color: "#d4af37"}}>LUZUL DESIGN</strong></h2>
+        <h2>Contacto <strong style={{ color: "#d4af37" }}>LUZUL DESIGN</strong></h2>
         <p>Hablemos sobre tu próximo evento</p>
       </div>
 
