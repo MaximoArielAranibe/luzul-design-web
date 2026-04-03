@@ -53,34 +53,6 @@ const Contact = () => {
       {/* Grid */}
       <div className="contact__grid">
         {/* Info */}
-        <div className="contact__info">
-          <h3>Información</h3>
-
-          <ul>
-            <li>
-              <span>📍</span> Río de Janeiro 136, Pergamino
-            </li>
-
-            <li>
-              <a href="+5492477687768"><span>📞</span> 02477 68-7768</a>
-            </li>
-
-            <li>
-              <span>🕘</span> Martes a Sábado · 9 a 18 hs
-            </li>
-          </ul>
-
-          <a
-            href="https://wa.me/5492477687768"
-            target="_blank"
-            rel="noreferrer"
-            className="btn-primary contact__whatsapp"
-          >
-            Contactar por WhatsApp
-          </a>
-        </div>
-
-        {/* Form */}
         <form className="contact__form" onSubmit={handleSubmit}>
           <h3>Solicitar Presupuesto</h3>
 
@@ -127,6 +99,35 @@ const Contact = () => {
             Enviar consulta
           </button>
         </form>
+        <div className="contact__info">
+          <h3>Información</h3>
+
+          <ul>
+            <li>
+              <span>📍</span> Río de Janeiro 136, Pergamino
+            </li>
+
+            <li>
+              <a href="+5492477687768"><span>📞</span> 02477 68-7768</a>
+            </li>
+
+            <li>
+              <span>🕘</span> Martes a Sábado · 9 a 18 hs
+            </li>
+          </ul>
+
+          <a
+            href="https://wa.me/5492477687768"
+            target="_blank"
+            rel="noreferrer"
+            className="btn-primary contact__whatsapp"
+          >
+            Contactar por WhatsApp
+          </a>
+        </div>
+
+
+        {/* Form */}
       </div>
     </section>
   );

@@ -17,7 +17,7 @@ function App() {
       <WhatsAppButton />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/videos' element={<ShowVideos />} />
+        <Route path='/muestrario' element={<ShowVideos />} />
       </Routes>
     </BrowserRouter>
   )

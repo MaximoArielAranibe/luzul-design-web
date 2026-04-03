@@ -2,7 +2,35 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import "../styles/pages/ShowVideos.scss";
 
-const videos = [
+/* ============================
+   GENERADOR DE IMÁGENES
+============================ */
+
+const generateImages = (startId = 9) => {
+  const totalImages = 42;
+
+  return Array.from({ length: totalImages }, (_, i) => {
+    const id = startId + i;
+    const index = i + 1;
+
+    const fileNumber = String(index).padStart(2, "0"); // 👈 CLAVE
+
+    return {
+      id,
+      preview: `/images/thumbs/foto${fileNumber}.webp`,
+      full: `/images/full/foto${fileNumber}.webp`,
+      title: `Trabajo ${index}`,
+      span: "normal",
+      isVideo: false
+    };
+  });
+};
+
+/* ============================
+   TUS VIDEOS ORIGINALES
+============================ */
+
+const baseVideos = [
   {
     id: 1,
     preview: "/luzul-video-1.mp4",
@@ -37,7 +65,6 @@ const videos = [
   {
     id: 5,
     preview: "/flores-3.jpg",
-    full: "/luzul-video-4.mp4",
     title: "Decoración flores",
     span: "normal",
     isVideo: false
@@ -52,7 +79,6 @@ const videos = [
   {
     id: 7,
     preview: "/flores-2.jpg",
-    full: "/luzul-video-4.mp4",
     title: "Decoración Flores",
     span: "normal",
     isVideo: false
@@ -60,18 +86,56 @@ const videos = [
   {
     id: 8,
     preview: "/luzul-evento-xv.jpeg",
-    full: "/luzul-video-4.mp4",
     title: "XV",
     span: "normal",
     isVideo: false
-  },
-
+  }
 ];
+
+/* ============================
+   DATA FINAL
+============================ */
+
+const videos = [
+  ...baseVideos,
+  ...generateImages(9)
+];
+
+/* ============================
+   COMPONENTE
+============================ */
 
 const ShowVideos = () => {
   const videoRefs = useRef({});
+  const observerRef = useRef(null);
+
   const [activeVideo, setActiveVideo] = useState(null);
   const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  const visibleVideos = videos.slice(0, visibleCount);
+
+  /* ============================
+     INFINITE SCROLL
+  ============================ */
+
+  const lastElementRef = useCallback((node) => {
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) => {
+            if (prev >= videos.length) return prev;
+            return prev + 12;
+          });
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    if (node) observerRef.current.observe(node);
+  }, []);
 
   /* Scroll lock */
   useEffect(() => {
@@ -84,22 +148,16 @@ const ShowVideos = () => {
     const currentVideoId = videoList[currentPreviewIndex]?.id;
 
     const video = videoRefs.current[currentVideoId];
-
     if (!video) return;
 
     video.currentTime = 0;
-
-    video.play().catch(() => { });
+    video.play().catch(() => {});
 
     const timeout = setTimeout(() => {
       video.pause();
-
-      setCurrentPreviewIndex((prev) => {
-        if (prev + 1 >= videoList.length) {
-          return 0;
-        }
-        return prev + 1;
-      });
+      setCurrentPreviewIndex((prev) =>
+        prev + 1 >= videoList.length ? 0 : prev + 1
+      );
     }, 3000);
 
     return () => clearTimeout(timeout);
@@ -118,28 +176,32 @@ const ShowVideos = () => {
   const handleHoverPlay = useCallback((id) => {
     const video = videoRefs.current[id];
     if (!video) return;
-
-    video.play().catch(() => { });
+    video.play().catch(() => {});
   }, []);
 
   const handleHoverPause = useCallback((id) => {
     const video = videoRefs.current[id];
     if (!video) return;
-
     video.pause();
   }, []);
 
   return (
     <>
       <section className="videos-section">
-        <h3 className="videos-section-text">Muestrario de <strong>videos</strong></h3>
+        <h3 className="videos-section-text">
+          Muestrario de <strong>nuestros trabajos</strong>
+        </h3>
+
         <div className="videos-container">
-          {videos.map((video, index) => {
+          {visibleVideos.map((video, index) => {
             const { id, preview, title, isVideo, span } = video;
+
+            const isLast = index === visibleVideos.length - 1;
 
             return (
               <article
                 key={id}
+                ref={isLast ? lastElementRef : null}
                 className={`media-card ${span}`}
                 style={{ animationDelay: `${index * 0.12}s` }}
                 onMouseEnter={() => isVideo && handleHoverPlay(id)}
@@ -154,11 +216,9 @@ const ShowVideos = () => {
                     playsInline
                     preload="metadata"
                     loop
-                    loading="lazy"
                   />
                 ) : (
                   <img src={preview} alt={title} loading="lazy" />
-
                 )}
 
                 <div className="media-overlay">
@@ -193,7 +253,10 @@ const ShowVideos = () => {
                   playsInline
                 />
               ) : (
-                <img src={activeVideo.preview} alt={activeVideo.title} />
+                <img
+                  src={activeVideo.full || activeVideo.preview}
+                  alt={activeVideo.title}
+                />
               )}
             </div>
           </div>,

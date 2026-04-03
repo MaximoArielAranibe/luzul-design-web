@@ -83,7 +83,7 @@ const Navbar = () => {
             </a>
           ))}
 
-          <Link to="/videos">Videos</Link>
+          <Link to="/muestrario">Muestrario</Link>
 
           <a
             href="#contacto"
@@ -119,8 +119,8 @@ const Navbar = () => {
           </a>
         ))}
 
-        <Link to="/videos" onClick={() => setOpen(false)}>
-          Videos
+        <Link to="/muestrario" onClick={() => setOpen(false)}>
+          Muestrario
         </Link>
 
         <a
