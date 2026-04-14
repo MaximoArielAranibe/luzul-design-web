@@ -3,30 +3,6 @@ import { createPortal } from "react-dom";
 import "../styles/pages/ShowVideos.scss";
 
 /* ============================
-   GENERADOR DE IMÁGENES
-============================ */
-
-const generateImages = (startId = 9) => {
-  const totalImages = 42;
-
-  return Array.from({ length: totalImages }, (_, i) => {
-    const id = startId + i;
-    const index = i + 1;
-
-    const fileNumber = String(index).padStart(2, "0"); // 👈 CLAVE
-
-    return {
-      id,
-      preview: `/images/thumbs/foto${fileNumber}.webp`,
-      full: `/images/full/foto${fileNumber}.webp`,
-      title: `Trabajo ${index}`,
-      span: "normal",
-      isVideo: false
-    };
-  });
-};
-
-/* ============================
    TUS VIDEOS ORIGINALES
 ============================ */
 
@@ -35,7 +11,7 @@ const baseVideos = [
     id: 1,
     preview: "/luzul-video-1.mp4",
     full: "/luzul-video-1.mp4",
-    title: "Brand Intro",
+    title: "Evento",
     span: "normal",
     isVideo: true
   },
@@ -93,15 +69,6 @@ const baseVideos = [
 ];
 
 /* ============================
-   DATA FINAL
-============================ */
-
-const videos = [
-  ...baseVideos,
-  ...generateImages(9)
-];
-
-/* ============================
    COMPONENTE
 ============================ */
 
@@ -109,10 +76,42 @@ const ShowVideos = () => {
   const videoRefs = useRef({});
   const observerRef = useRef(null);
 
+  const [images, setImages] = useState([]); // 👈 JSON
   const [activeVideo, setActiveVideo] = useState(null);
   const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(12);
 
+  /* ============================
+     FETCH JSON
+  ============================ */
+
+  useEffect(() => {
+    fetch("/data/media.json")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("JSON:", data);
+
+        const formatted = data.map((item) => ({
+          id: item.id,
+          preview: `/images/thumbs/${item.file}.webp`,
+          full: `/images/full/${item.file}.webp`,
+          title: item.title,
+          span: item.span || "normal",
+          isVideo: false
+        }));
+
+        console.log("FORMATTED:", formatted);
+
+        setImages(formatted);
+      })
+      .catch((err) => console.error("Error cargando JSON:", err));
+  }, []);
+
+  /* ============================
+     DATA FINAL
+  ============================ */
+
+  const videos = [...baseVideos, ...images];
   const visibleVideos = videos.slice(0, visibleCount);
 
   /* ============================
@@ -135,7 +134,7 @@ const ShowVideos = () => {
     );
 
     if (node) observerRef.current.observe(node);
-  }, []);
+  }, [videos.length]);
 
   /* Scroll lock */
   useEffect(() => {
@@ -161,7 +160,7 @@ const ShowVideos = () => {
     }, 3000);
 
     return () => clearTimeout(timeout);
-  }, [currentPreviewIndex]);
+  }, [currentPreviewIndex, videos]);
 
   /* ESC close */
   useEffect(() => {
@@ -195,7 +194,6 @@ const ShowVideos = () => {
         <div className="videos-container">
           {visibleVideos.map((video, index) => {
             const { id, preview, title, isVideo, span } = video;
-
             const isLast = index === visibleVideos.length - 1;
 
             return (
