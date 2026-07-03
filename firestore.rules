@@ -1,0 +1,24 @@
+// firestore.rules
+// Desplegar con: firebase deploy --only firestore:rules
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // UID del admin — reemplazar con el UID real copiado de Firebase Console
+    function isAdmin() {
+      return request.auth != null &&
+             request.auth.uid == "l1OTmbPKErX3jiPUnjVBH2cqL0g1";
+    }
+
+    // Colección media:
+    // - Lectura pública (el muestrario carga sin login)
+    // - Escritura/eliminación solo el admin
+    match /media/{docId} {
+      allow read: if true;
+      allow write, delete: if isAdmin();
+    }
+
+  }
+}

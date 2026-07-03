@@ -1,0 +1,228 @@
+// src/styles/pages/LoginPage.scss
+@use "../variables" as *;
+@use "../mixins" as *;
+
+/* ============================
+   PÁGINA LOGIN
+============================ */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $bg-dark;
+  padding: $space-lg;
+}
+
+/* ============================
+   CARD
+============================ */
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: $card-bg;
+  border-radius: $radius-xl;
+  padding: $space-3xl $space-xl;
+  border: 1px solid rgba($gold, 0.12);
+  box-shadow: $shadow-lg, 0 0 60px rgba($gold, 0.04);
+
+  &__logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: $space-xl;
+
+    img {
+      height: 52px;
+      object-fit: contain;
+      transform: scale(1.4);
+    }
+  }
+
+  &__title {
+    @include font($font-hubot, bold);
+    font-size: 1.6rem;
+    color: $text-light;
+    text-align: center;
+    margin: 0 0 $space-xxs;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  &__subtitle {
+    font-size: 0.82rem;
+    color: $text-muted;
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0 0 $space-2xl;
+  }
+}
+
+/* ============================
+   FORM
+============================ */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+
+  /* Campo wrapper */
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+
+    label {
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: $text-muted;
+      @include font($font-base, medium);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba($white, 0.04);
+      border: 1px solid rgba($white, 0.1);
+      border-radius: $radius-md;
+      color: $text-light;
+      font-size: 0.95rem;
+      font-family: $font-base;
+      outline: none;
+      transition: border-color $transition-base, box-shadow $transition-base;
+
+      &::placeholder {
+        color: rgba($text-muted, 0.5);
+      }
+
+      &:focus {
+        border-color: rgba($gold, 0.5);
+        box-shadow: 0 0 0 3px rgba($gold, 0.08);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    &.has-error input {
+      border-color: #e05252;
+    }
+  }
+
+  /* Wrap password + ojo */
+  &__password-wrap {
+    position: relative;
+
+    input {
+      padding-right: 3rem;
+    }
+  }
+
+  &__eye {
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
+    opacity: 0.6;
+    transition: opacity $transition-fast;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__error {
+    font-size: 0.75rem;
+    color: #e05252;
+    letter-spacing: 0.3px;
+  }
+
+  &__server-error {
+    background: rgba(#e05252, 0.1);
+    border: 1px solid rgba(#e05252, 0.3);
+    border-radius: $radius-md;
+    padding: $space-sm $space-md;
+    font-size: 0.85rem;
+    color: #e05252;
+    text-align: center;
+  }
+
+  &__submit {
+    width: 100%;
+    margin-top: $space-xs;
+    padding: 0.85rem;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-xs;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* ============================
+   SPINNER BOTÓN
+============================ */
+
+.btn-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba($black, 0.3);
+  border-top-color: $black;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================
+   AUTH LOADING (ProtectedRoute)
+============================ */
+
+.auth-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $bg-dark;
+
+  &__spinner {
+    display: block;
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba($gold, 0.2);
+    border-top-color: $gold;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: $space-2xl $space-lg;
+  }
+}

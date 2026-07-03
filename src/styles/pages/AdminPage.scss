@@ -1,0 +1,545 @@
+// src/styles/pages/AdminPage.scss
+@use "../variables" as *;
+@use "../mixins" as *;
+
+/* ============================
+   LAYOUT ADMIN
+============================ */
+
+.admin-page {
+  display: flex;
+  min-height: 100vh;
+  background: $bg-dark;
+  color: $text-light;
+}
+
+/* ============================
+   SIDEBAR
+============================ */
+
+.admin-sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: $card-bg;
+  border-right: 1px solid rgba($white, 0.06);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: $space-xl 0;
+
+  &__logo {
+    display: flex;
+    justify-content: center;
+    padding: 0 $space-xl $space-2xl;
+    border-bottom: 1px solid rgba($white, 0.05);
+
+    img {
+      height: 40px;
+      object-fit: contain;
+      transform: scale(1.3);
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    padding: $space-xl 0;
+    flex: 1;
+  }
+
+  &__item {
+    padding: $space-md $space-xl;
+    text-align: left;
+    background: none;
+    border: none;
+    color: $text-muted;
+    font-size: 0.88rem;
+    letter-spacing: 0.5px;
+    font-family: $font-base;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-left: 3px solid transparent;
+
+    &:hover {
+      color: $text-light;
+      background: rgba($white, 0.03);
+    }
+
+    &.active {
+      color: $gold;
+      border-left-color: $gold;
+      background: rgba($gold, 0.06);
+    }
+  }
+
+  &__footer {
+    padding: $space-lg $space-xl;
+    border-top: 1px solid rgba($white, 0.05);
+  }
+
+  &__email {
+    font-size: 0.75rem;
+    color: $text-muted;
+    margin: 0 0 $space-md;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__logout {
+    width: 100%;
+    font-size: 0.82rem;
+  }
+}
+
+/* ============================
+   MAIN CONTENT
+============================ */
+
+.admin-main {
+  flex: 1;
+  padding: $space-2xl $space-xl;
+  overflow-y: auto;
+
+  &__inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+}
+
+/* ============================
+   MEDIA UPLOADER
+============================ */
+
+.media-uploader {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+
+  &__title {
+    @include font($font-hubot, semibold);
+    font-size: 1.4rem;
+    color: $text-light;
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $space-md;
+    justify-content: flex-end;
+  }
+}
+
+/* Drop zone */
+.drop-zone {
+  border: 2px dashed rgba($white, 0.12);
+  border-radius: $radius-lg;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color $transition-base, background $transition-base;
+  overflow: hidden;
+  position: relative;
+
+  &:hover,
+  &.drag-over {
+    border-color: rgba($gold, 0.5);
+    background: rgba($gold, 0.03);
+  }
+
+  &.has-file {
+    border-style: solid;
+    border-color: rgba($gold, 0.3);
+  }
+
+  &__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-xl;
+    text-align: center;
+
+    p {
+      color: $text-muted;
+      font-size: 0.95rem;
+      margin: 0;
+
+      strong {
+        color: $gold;
+      }
+    }
+
+    small {
+      font-size: 0.75rem;
+      color: rgba($text-muted, 0.6);
+      letter-spacing: 0.5px;
+    }
+  }
+
+  &__icon {
+    font-size: 2.4rem;
+  }
+
+  &__preview {
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    position: relative;
+
+    img,
+    video {
+      width: 100%;
+      height: 100%;
+      min-height: 220px;
+      max-height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__remove {
+    position: absolute;
+    top: $space-sm;
+    right: $space-sm;
+    background: rgba($black, 0.7);
+    border: none;
+    color: $white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background $transition-fast;
+
+    &:hover {
+      background: rgba(#e05252, 0.85);
+    }
+  }
+}
+
+/* ============================
+   FORM FIELDS
+============================ */
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+
+  label {
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: $text-muted;
+    @include font($font-base, medium);
+  }
+
+  input[type="text"] {
+    padding: 0.72rem 1rem;
+    background: rgba($white, 0.04);
+    border: 1px solid rgba($white, 0.1);
+    border-radius: $radius-md;
+    color: $text-light;
+    font-size: 0.95rem;
+    font-family: $font-base;
+    outline: none;
+    transition: border-color $transition-base, box-shadow $transition-base;
+
+    &::placeholder { color: rgba($text-muted, 0.45); }
+
+    &:focus {
+      border-color: rgba($gold, 0.5);
+      box-shadow: 0 0 0 3px rgba($gold, 0.08);
+    }
+
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  &.has-error input {
+    border-color: #e05252;
+  }
+}
+
+/* Span radio pills */
+.span-options {
+  display: flex;
+  gap: $space-sm;
+  flex-wrap: wrap;
+}
+
+.span-option {
+  padding: 0.45rem 1rem;
+  border-radius: $radius-md;
+  border: 1px solid rgba($white, 0.1);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all $transition-fast;
+  color: $text-muted;
+  user-select: none;
+
+  input {
+    display: none;
+  }
+
+  &.active {
+    border-color: $gold;
+    color: $gold;
+    background: rgba($gold, 0.08);
+  }
+
+  &:hover:not(.active) {
+    border-color: rgba($white, 0.25);
+    color: $text-light;
+  }
+}
+
+/* ============================
+   PROGRESO / FEEDBACK
+============================ */
+
+.upload-progress {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+
+  &__bar {
+    flex: 1;
+    height: 6px;
+    background: $gold;
+    border-radius: 99px;
+    transition: width 0.3s ease;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba($white, 0.2);
+      border-radius: inherit;
+      width: 100%;
+    }
+  }
+
+  span {
+    font-size: 0.78rem;
+    color: $text-muted;
+    min-width: 32px;
+    text-align: right;
+  }
+}
+
+.upload-error {
+  background: rgba(#e05252, 0.1);
+  border: 1px solid rgba(#e05252, 0.3);
+  border-radius: $radius-md;
+  padding: $space-sm $space-md;
+  font-size: 0.85rem;
+  color: #e05252;
+}
+
+.upload-success {
+  background: rgba(#4caf50, 0.1);
+  border: 1px solid rgba(#4caf50, 0.3);
+  border-radius: $radius-md;
+  padding: $space-sm $space-md;
+  font-size: 0.85rem;
+  color: #4caf50;
+}
+
+/* ============================
+   BOTONES GLOBALES ADMIN
+============================ */
+
+.btn-secondary {
+  padding: 0.6rem 1.4rem;
+  border: 1px solid rgba($white, 0.15);
+  border-radius: $radius-md;
+  background: transparent;
+  color: $text-muted;
+  font-family: $font-base;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all $transition-base;
+
+  &:hover:not(:disabled) {
+    border-color: rgba($white, 0.35);
+    color: $text-light;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+/* ============================
+   MEDIA LIST
+============================ */
+
+.media-list {
+  &__title {
+    @include font($font-hubot, semibold);
+    font-size: 1.4rem;
+    color: $text-light;
+    margin: 0 0 $space-xl;
+  }
+
+  &__status {
+    color: $text-muted;
+    font-size: 0.9rem;
+
+    &--error {
+      color: #e05252;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: $space-lg;
+  }
+
+  &__card {
+    background: $card-bg;
+    border-radius: $radius-lg;
+    border: 1px solid rgba($white, 0.06);
+    overflow: hidden;
+    position: relative;
+    transition: border-color $transition-base;
+
+    &:hover {
+      border-color: rgba($gold, 0.2);
+    }
+  }
+
+  &__thumb {
+    position: relative;
+    height: 160px;
+    background: $bg-section;
+
+    img,
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: $space-xs;
+    left: $space-xs;
+    background: rgba($black, 0.75);
+    border-radius: $radius-sm;
+    padding: 2px $space-xs;
+    font-size: 0.7rem;
+    color: $text-light;
+
+    &.video { color: $gold; }
+  }
+
+  &__info {
+    padding: $space-sm $space-md;
+  }
+
+  &__item-title {
+    font-size: 0.9rem;
+    color: $text-soft;
+    margin: 0 0 $space-xxs;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__span {
+    font-size: 0.72rem;
+    color: $text-muted;
+    letter-spacing: 0.5px;
+  }
+
+  &__delete {
+    position: absolute;
+    top: $space-xs;
+    right: $space-xs;
+    background: rgba($black, 0.75);
+    border: none;
+    border-radius: $radius-sm;
+    padding: $space-xxs $space-xs;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background $transition-fast;
+
+    &:hover {
+      background: rgba(#e05252, 0.85);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: wait;
+    }
+  }
+}
+
+/* ============================
+   FIELD ERROR
+============================ */
+
+.field-error {
+  font-size: 0.75rem;
+  color: #e05252;
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+
+@media (max-width: 768px) {
+  .admin-page {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    min-height: auto;
+    padding: $space-md 0;
+
+    &__logo {
+      padding-bottom: $space-md;
+    }
+
+    &__nav {
+      flex-direction: row;
+      overflow-x: auto;
+      padding: $space-sm 0;
+    }
+
+    &__item {
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+
+      &.active {
+        border-left-color: transparent;
+        border-bottom-color: $gold;
+      }
+    }
+
+    &__footer {
+      display: none; // en mobile mostrar en un menú o drawer adicional
+    }
+  }
+
+  .admin-main {
+    padding: $space-lg;
+  }
+}

@@ -219,3 +219,31 @@
   }
 
 }
+
+.delete-media-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  background: rgba(255, 0, 0, .85);
+  color: white;
+
+  font-size: 18px;
+
+  z-index: 20;
+
+  transition: .2s;
+
+  &:hover{
+      transform: scale(1.08);
+      background:#ff0000;
+  }
+}

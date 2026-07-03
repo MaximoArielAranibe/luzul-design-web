@@ -1,201 +1,126 @@
+// src/components/ShowVideos.jsx
+// Muestrario — combina videos/fotos locales + contenido subido desde el panel admin (Firestore)
+
 import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
+import useMediaItems from "../hooks/useMediaItems";
 import "../styles/pages/ShowVideos.scss";
+import { useAuth } from "../context/AuthContext";
+import AdminToolbar from "./AdminToolbar";
+import UploadModal from "./admin/UploadModal";
+import useDeleteMedia from "../hooks/useDeleteMedia";
 
-/* ============================
-   TUS VIDEOS ORIGINALES
-============================ */
-
-const baseVideos = [
-  {
-    id: 1,
-    preview: "/luzul-video-1.mp4",
-    full: "/luzul-video-1.mp4",
-    title: "Evento",
-    span: "normal",
-    isVideo: true
-  },
-  {
-    id: 2,
-    preview: "/luzul-video-2.mp4",
-    full: "/luzul-video-2.mp4",
-    title: "Ambientación Evento",
-    span: "normal",
-    isVideo: true
-  },
-  {
-    id: 3,
-    preview: "/luzul-video-3.mp4",
-    full: "/luzul-video-3.mp4",
-    title: "Montaje Escenografía",
-    span: "tall",
-    isVideo: true
-  },
-  {
-    id: 4,
-    preview: "/nuevas-3.jpeg",
-    title: "XV",
-    span: "normal",
-    isVideo: false
-  },
-  {
-    id: 5,
-    preview: "/flores-3.jpg",
-    title: "Decoración flores",
-    span: "normal",
-    isVideo: false
-  },
-  {
-    id: 6,
-    preview: "/luzul-sillones-blancos.jpeg",
-    title: "Sillones Blancos",
-    span: "normal",
-    isVideo: false
-  },
-  {
-    id: 7,
-    preview: "/flores-2.jpg",
-    title: "Decoración Flores",
-    span: "normal",
-    isVideo: false
-  },
-  {
-    id: 8,
-    preview: "/luzul-evento-xv.jpeg",
-    title: "XV",
-    span: "normal",
-    isVideo: false
-  }
-];
-
-/* ============================
-   COMPONENTE
-============================ */
 
 const ShowVideos = () => {
   const videoRefs = useRef({});
   const observerRef = useRef(null);
-
-  const [images, setImages] = useState([]); // 👈 JSON
   const [activeVideo, setActiveVideo] = useState(null);
   const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(12);
+  const { items: firestoreItems } = useMediaItems();
 
-  /* ============================
-     FETCH JSON
-  ============================ */
+  const { user } = useAuth();
 
-  useEffect(() => {
-    fetch("/data/media.json")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("JSON:", data);
+  const [showUploader, setShowUploader] = useState(false);
+  const [showManager, setShowManager] = useState(false);
 
-        const formatted = data.map((item) => ({
-          id: item.id,
-          preview: `/images/thumbs/${item.file}.webp`,
-          full: `/images/full/${item.file}.webp`,
-          title: item.title,
-          span: item.span || "normal",
-          isVideo: false
-        }));
 
-        console.log("FORMATTED:", formatted);
+  const media = firestoreItems.map((item) => ({
+    id: item.id,
+    firestoreId: item.id,
+    preview: item.url,
+    full: item.url,
+    title: item.title,
+    span: item.span || "normal",
+    isVideo: item.type === "video",
+  }));
 
-        setImages(formatted);
-      })
-      .catch((err) => console.error("Error cargando JSON:", err));
-  }, []);
-
-  /* ============================
-     DATA FINAL
-  ============================ */
-
-  const videos = [...baseVideos, ...images];
+  const videos = media;
   const visibleVideos = videos.slice(0, visibleCount);
+  const { deleteMedia } = useDeleteMedia();
 
-  /* ============================
-     INFINITE SCROLL
-  ============================ */
+  const lastElementRef = useCallback(
+    (node) => {
+      if (observerRef.current) observerRef.current.disconnect();
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setVisibleCount((prev) => prev >= videos.length ? prev : prev + 12);
+          }
+        },
+        { rootMargin: "200px" }
+      );
+      if (node) observerRef.current.observe(node);
+    },
+    [videos.length]
+  );
 
-  const lastElementRef = useCallback((node) => {
-    if (observerRef.current) observerRef.current.disconnect();
+  useEffect(() => { document.body.style.overflow = activeVideo ? "hidden" : ""; }, [activeVideo]);
 
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisibleCount((prev) => {
-            if (prev >= videos.length) return prev;
-            return prev + 12;
-          });
-        }
-      },
-      { rootMargin: "200px" }
-    );
-
-    if (node) observerRef.current.observe(node);
-  }, [videos.length]);
-
-  /* Scroll lock */
-  useEffect(() => {
-    document.body.style.overflow = activeVideo ? "hidden" : "";
-  }, [activeVideo]);
-
-  /* Preview secuencial */
   useEffect(() => {
     const videoList = videos.filter((v) => v.isVideo);
     const currentVideoId = videoList[currentPreviewIndex]?.id;
-
     const video = videoRefs.current[currentVideoId];
     if (!video) return;
-
     video.currentTime = 0;
-    video.play().catch(() => {});
-
+    video.play().catch(() => { });
     const timeout = setTimeout(() => {
       video.pause();
-      setCurrentPreviewIndex((prev) =>
-        prev + 1 >= videoList.length ? 0 : prev + 1
-      );
+      setCurrentPreviewIndex((prev) => prev + 1 >= videoList.length ? 0 : prev + 1);
     }, 3000);
-
     return () => clearTimeout(timeout);
   }, [currentPreviewIndex, videos]);
 
-  /* ESC close */
   useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === "Escape") setActiveVideo(null);
-    };
-
+    const handleEsc = (e) => { if (e.key === "Escape") setActiveVideo(null); };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  const handleHoverPlay = useCallback((id) => {
-    const video = videoRefs.current[id];
-    if (!video) return;
-    video.play().catch(() => {});
-  }, []);
+  const handleHoverPlay = useCallback((id) => { videoRefs.current[id]?.play().catch(() => { }); }, []);
+  const handleHoverPause = useCallback((id) => { videoRefs.current[id]?.pause(); }, []);
 
-  const handleHoverPause = useCallback((id) => {
-    const video = videoRefs.current[id];
-    if (!video) return;
-    video.pause();
-  }, []);
+  const testCloudinary = async () => {
+    const fd = new FormData();
+
+    fd.append("file", document.querySelector("#img").files[0]);
+    fd.append("upload_preset", "luzuldesign");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/drckxil9/image/upload",
+      {
+        method: "POST",
+        body: fd,
+      }
+    );
+
+    console.log(await res.text());
+  };
 
   return (
     <>
+      <input id="img" type="file" />
+
+      <button onClick={testCloudinary}>
+        Probar
+      </button>
       <section className="videos-section">
         <h3 className="videos-section-text">
-          Muestrario de <strong>nuestros trabajos</strong>
+          Muestrario de nuestros<strong> trabajos</strong>
         </h3>
+
+        {user && (
+          <AdminToolbar
+            onUpload={() => setShowUploader(true)}
+
+            onManage={() => setShowManager(true)}
+          />
+        )}
 
         <div className="videos-container">
           {visibleVideos.map((video, index) => {
             const { id, preview, title, isVideo, span } = video;
             const isLast = index === visibleVideos.length - 1;
-
             return (
               <article
                 key={id}
@@ -207,59 +132,79 @@ const ShowVideos = () => {
                 onClick={() => setActiveVideo(video)}
               >
                 {isVideo ? (
-                  <video
-                    ref={(el) => (videoRefs.current[id] = el)}
-                    src={preview}
-                    muted
-                    playsInline
-                    preload="metadata"
-                    loop
-                  />
+                  <video ref={(el) => (videoRefs.current[id] = el)} src={preview} muted playsInline preload="metadata" loop />
                 ) : (
                   <img src={preview} alt={title} loading="lazy" />
                 )}
+                <div className="media-overlay"><h3>{title}</h3></div>
+                {user && (
+                  <button
+                    className="delete-media-btn"
+                    onClick={async (e) => {
+                      e.stopPropagation();
 
-                <div className="media-overlay">
-                  <h3>{title}</h3>
-                </div>
+                      if (!window.confirm("¿Eliminar este archivo?")) return;
+
+                      switch (video.source) {
+                        case "firestore":
+                          await deleteMedia(video.firestoreId);
+                          break;
+
+                        case "json":
+                          alert(
+                            `Más adelante vamos a borrar la imagen ${video.jsonId} del media.json`
+                          );
+                          break;
+
+                        case "base":
+                          alert(
+                            "Esta imagen pertenece al proyecto y todavía no implementamos su borrado."
+                          );
+                          break;
+
+                        default:
+                          break;
+                      }
+                    }}
+                  >
+                    🗑
+                  </button>
+                )}
               </article>
             );
           })}
         </div>
       </section>
 
-      {activeVideo &&
-        createPortal(
-          <div className="video-modal" onClick={() => setActiveVideo(null)}>
-            <div
-              className="video-modal-inner"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="modal-close"
-                onClick={() => setActiveVideo(null)}
-              >
-                ✕
-              </button>
+      {activeVideo && createPortal(
+        <div className="video-modal" onClick={() => setActiveVideo(null)}>
+          <div className="video-modal-inner" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setActiveVideo(null)} aria-label="Cerrar">✕</button>
+            {activeVideo.isVideo ? (
+              <video key={activeVideo.full} src={activeVideo.full} controls autoPlay playsInline />
+            ) : (
+              <img src={activeVideo.full || activeVideo.preview} alt={activeVideo.title} />
+            )}
+          </div>
+        </div>,
+        document.body
+      )}
 
-              {activeVideo.isVideo ? (
-                <video
-                  key={activeVideo.full}
-                  src={activeVideo.full}
-                  controls
-                  autoPlay
-                  playsInline
-                />
-              ) : (
-                <img
-                  src={activeVideo.full || activeVideo.preview}
-                  alt={activeVideo.title}
-                />
-              )}
-            </div>
-          </div>,
-          document.body
-        )}
+      {showUploader && (
+
+        <UploadModal
+          onClose={() => setShowUploader(false)}
+        />
+
+      )}
+
+      {showManager && (
+
+        <ManagerModal
+          onClose={() => setShowManager(false)}
+        />
+
+      )}
     </>
   );
 };

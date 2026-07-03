@@ -1,0 +1,101 @@
+.upload-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .75);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+
+  backdrop-filter: blur(6px);
+
+  animation: fadeIn .2s ease;
+}
+
+.upload-modal__content {
+  position: relative;
+
+  width: min(900px, 95vw);
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  background: #151515;
+
+  border-radius: 18px;
+
+  padding: 2rem;
+
+  box-shadow: 0 30px 60px rgba(0,0,0,.45);
+
+  animation: modalUp .25s ease;
+}
+
+.upload-modal__content--large{
+  width:min(1200px,95vw);
+}
+
+.upload-modal__close{
+
+  position:absolute;
+
+  top:18px;
+
+  right:18px;
+
+  width:40px;
+
+  height:40px;
+
+  border:none;
+
+  border-radius:50%;
+
+  cursor:pointer;
+
+  background:#242424;
+
+  color:white;
+
+  font-size:20px;
+
+  transition:.2s;
+
+}
+
+.upload-modal__close:hover{
+
+  background:#e53935;
+
+}
+
+@keyframes fadeIn{
+
+  from{opacity:0;}
+
+  to{opacity:1;}
+
+}
+
+@keyframes modalUp{
+
+  from{
+
+    opacity:0;
+
+    transform:translateY(30px);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:none;
+
+  }
+
+}
