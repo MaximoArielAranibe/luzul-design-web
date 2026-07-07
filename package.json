@@ -8,7 +8,6 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "migrate": "node scripts/migrateAll.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
