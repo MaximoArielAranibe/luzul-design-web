@@ -11,8 +11,10 @@ import "../styles/pages/AdminPage.scss";
 
 const TABS = [
   { id: "inicio", label: "Inicio" },
+  { id: "muestrario", label: "Muestrario" },
   { id: "upload", label: "Subir contenido" },
   { id: "list", label: "Contenido publicado" },
+
 ];
 
 const AdminPage = () => {
@@ -44,6 +46,10 @@ const AdminPage = () => {
       onClick={() => {
         if (tab.id === "inicio") {
           navigate("/");
+          return;
+        }
+        if (tab.id === "muestrario") {
+          navigate("/muestrario");
           return;
         }
 
