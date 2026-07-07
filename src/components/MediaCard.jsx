@@ -12,7 +12,9 @@ const MediaCard = ({
   onEdit,
   onDelete,
   user,
-  isSorting
+  isSorting,
+  dragListeners,
+  dragAttributes
 }) => {
   return (
     <article
@@ -52,6 +54,17 @@ const MediaCard = ({
       <div className="media-overlay">
         <h3>{media.title}</h3>
       </div>
+
+      {isSorting && (
+        <div
+          className="drag-handle"
+          {...dragListeners}
+          {...dragAttributes}
+          onClick={(e) => e.stopPropagation()}
+        >
+          ⋮⋮
+        </div>
+      )}
 
       {user && (
         <button

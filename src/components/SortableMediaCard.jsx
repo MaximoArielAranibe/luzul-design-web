@@ -1,5 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import React from "react";
 
 const SortableMediaCard = ({
   id,
@@ -23,17 +24,17 @@ const SortableMediaCard = ({
     transition,
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 1000 : "auto",
-    touchAction: "none",
   };
 
   return (
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
     >
-      {children}
+      {React.cloneElement(children, {
+        dragListeners: listeners,
+        dragAttributes: attributes,
+      })}
     </div>
   );
 };
