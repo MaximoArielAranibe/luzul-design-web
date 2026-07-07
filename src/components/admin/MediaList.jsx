@@ -63,7 +63,6 @@ const MediaList = () => {
             {/* Info */}
             <div className="media-list__info">
               <p className="media-list__item-title">{item.title}</p>
-              <span className="media-list__span">Span: {item.span}</span>
             </div>
 
             {/* Eliminar */}

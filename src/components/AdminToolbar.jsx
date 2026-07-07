@@ -1,5 +1,5 @@
-/* import "./AdminToolbar.scss";
- */
+import '../styles/AdminToolbar.scss'
+
 const AdminToolbar = ({ onUpload, onManage }) => {
 
     return (

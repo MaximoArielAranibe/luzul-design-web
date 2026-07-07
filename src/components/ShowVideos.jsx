@@ -11,8 +11,11 @@ import { useAuth } from "../context/AuthContext";
 import AdminToolbar from "./AdminToolbar";
 import UploadModal from "./admin/UploadModal";
 import ManagerModal from "./admin/ManagerModal";
+import EditMediaModal from "./EditMediaModal";
 
 import "../styles/pages/ShowVideos.scss";
+
+
 
 const ShowVideos = () => {
   const videoRefs = useRef({});
@@ -24,10 +27,12 @@ const ShowVideos = () => {
 
   const [activeVideo, setActiveVideo] = useState(null);
   const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(12);
+  const [visibleCount, setVisibleCount] = useState(16);
 
   const [showUploader, setShowUploader] = useState(false);
   const [showManager, setShowManager] = useState(false);
+  const [editingMedia, setEditingMedia] = useState(null);
+
 
   const media = firestoreItems.map((item) => ({
     id: item.id,
@@ -49,12 +54,12 @@ const ShowVideos = () => {
         (entries) => {
           if (entries[0].isIntersecting) {
             setVisibleCount((prev) =>
-              prev >= media.length ? prev : prev + 12
+              prev >= media.length ? prev : prev + 24
             );
           }
         },
         {
-          rootMargin: "200px",
+          rootMargin: "1200px",
         }
       );
 
@@ -84,7 +89,7 @@ const ShowVideos = () => {
 
     video.currentTime = 0;
 
-    video.play().catch(() => {});
+    video.play().catch(() => { });
 
     const timeout = setTimeout(() => {
       video.pause();
@@ -110,7 +115,7 @@ const ShowVideos = () => {
   }, []);
 
   const handleHoverPlay = useCallback((id) => {
-    videoRefs.current[id]?.play().catch(() => {});
+    videoRefs.current[id]?.play().catch(() => { });
   }, []);
 
   const handleHoverPause = useCallback((id) => {
@@ -171,6 +176,21 @@ const ShowVideos = () => {
                 </div>
 
                 {user && (
+                  <button
+                    className="edit-media-btn"
+
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingMedia(mediaItem);
+                    }}
+                  >
+                    ✏️
+                  </button>
+                )}
+
+
+                {user && (
+
                   <button
                     className="delete-media-btn"
                     onClick={async (e) => {
@@ -242,6 +262,13 @@ const ShowVideos = () => {
       {showManager && (
         <ManagerModal
           onClose={() => setShowManager(false)}
+        />
+      )}
+
+      {editingMedia && (
+        <EditMediaModal
+          media={editingMedia}
+          onClose={() => setEditingMedia(null)}
         />
       )}
     </>
