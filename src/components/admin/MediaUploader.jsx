@@ -87,11 +87,14 @@ const MediaUploader = () => {
     }
   };
 
+  
+
   const isUploading = uploadState.uploading;
   const isDone = uploadState.url && !uploadState.uploading;
 
   return (
     <form className="media-uploader" onSubmit={handleSubmit} noValidate>
+
 
       <h2 className="media-uploader__title">Subir contenido</h2>
 
