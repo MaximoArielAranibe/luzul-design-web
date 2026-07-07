@@ -19,6 +19,11 @@ import "../styles/pages/ShowVideos.scss";
 import {
   DndContext,
   closestCenter,
+  PointerSensor,
+  TouchSensor,
+  MouseSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 
 import {
@@ -166,7 +171,7 @@ const ShowVideos = () => {
 
   const { saveOrder } = useMediaSort();
 
-  const handleDragEnd = async ({ active, over }) => {
+  const handleDragEnd = ({ active, over }) => {
     if (!over || active.id === over.id) return;
 
     const oldIndex = sortedMedia.findIndex(
@@ -177,22 +182,24 @@ const ShowVideos = () => {
       (item) => item.id === over.id
     );
 
-    const newItems = arrayMove(
-      sortedMedia,
-      oldIndex,
-      newIndex
+    setSortedMedia(
+      arrayMove(sortedMedia, oldIndex, newIndex)
     );
-
-    setSortedMedia(newItems);
-
-    try {
-      console.log(user);
-      console.log(user?.uid);
-      await saveOrder(newItems);
-    } catch (err) {
-      console.error(err);
-    }
   };
+
+  const sortingSensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 8,
+      },
+    })
+  );
 
   return (
     <>
@@ -213,6 +220,7 @@ const ShowVideos = () => {
         )}
 
         <DndContext
+        sensors={isSorting ? sortingSensors : undefined}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
         >
