@@ -32,7 +32,7 @@ const ShowVideos = () => {
   const [showUploader, setShowUploader] = useState(false);
   const [showManager, setShowManager] = useState(false);
   const [editingMedia, setEditingMedia] = useState(null);
-
+  const [isSorting, setIsSorting] = useState(false);
 
   const media = firestoreItems.map((item) => ({
     id: item.id,
@@ -133,7 +133,9 @@ const ShowVideos = () => {
           <AdminToolbar
             onUpload={() => setShowUploader(true)}
             onManage={() => setShowManager(true)}
-          />
+            isSorting={isSorting}
+            onToggleSorting={setIsSorting}
+            />
         )}
 
         <div className="videos-container">

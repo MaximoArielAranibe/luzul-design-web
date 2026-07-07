@@ -87,7 +87,7 @@ const MediaUploader = () => {
     }
   };
 
-  
+
 
   const isUploading = uploadState.uploading;
   const isDone = uploadState.url && !uploadState.uploading;
@@ -167,7 +167,7 @@ const MediaUploader = () => {
       </div>
 
       {/* ── Span / Layout ──────────────────────────── */}
-      <div className="form-field">
+     {/*  <div className="form-field">
         <label>Tamaño en grilla</label>
         <div className="span-options">
           {SPAN_OPTIONS.map((opt) => (
@@ -184,7 +184,7 @@ const MediaUploader = () => {
             </label>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* ── Progreso ───────────────────────────────── */}
       {isUploading && (

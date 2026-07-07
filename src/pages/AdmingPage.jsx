@@ -10,6 +10,7 @@ import logo from "../assets/logo-blanco.png";
 import "../styles/pages/AdminPage.scss";
 
 const TABS = [
+  { id: "inicio", label: "Inicio" },
   { id: "upload", label: "Subir contenido" },
   { id: "list", label: "Contenido publicado" },
 ];
@@ -34,16 +35,25 @@ const AdminPage = () => {
         </Link>
 
         <nav className="admin-sidebar__nav">
-          {TABS.map((tab) => (
-            <button
-              key={tab.id}
-              className={`admin-sidebar__item ${activeTab === tab.id ? "active" : ""}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+  {TABS.map((tab) => (
+    <button
+      key={tab.id}
+      className={`admin-sidebar__item ${
+        activeTab === tab.id ? "active" : ""
+      }`}
+      onClick={() => {
+        if (tab.id === "inicio") {
+          navigate("/");
+          return;
+        }
+
+        setActiveTab(tab.id);
+      }}
+    >
+      {tab.label}
+    </button>
+  ))}
+</nav>
 
         <div className="admin-sidebar__footer">
           <p className="admin-sidebar__email">{user?.email}</p>

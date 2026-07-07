@@ -1,11 +1,13 @@
 import '../styles/AdminToolbar.scss'
 
-const AdminToolbar = ({ onUpload, onManage }) => {
-
+const AdminToolbar = ({
+    onUpload,
+    onManage,
+    onToggleSorting,
+    isSorting,
+}) => {
     return (
-
         <div className="admin-toolbar">
-
             <button
                 className="admin-toolbar__button"
                 onClick={onUpload}
@@ -20,10 +22,15 @@ const AdminToolbar = ({ onUpload, onManage }) => {
                 ⚙ Administrar
             </button>
 
+            <button
+                className={`admin-toolbar__button ${isSorting ? "active" : ""
+                    }`}
+                onClick={onToggleSorting}
+            >
+                {isSorting ? "✅ Finalizar orden" : "↕ Reordenar"}
+            </button>
         </div>
-
     );
-
 };
 
 export default AdminToolbar;

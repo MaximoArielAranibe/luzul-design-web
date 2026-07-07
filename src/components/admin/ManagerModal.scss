@@ -33,7 +33,7 @@
   justify-content:space-between;
   align-items:center;
 
-  padding:1.5rem 2rem;
+  padding:1.5rem 1.8rem;
 
   border-bottom:1px solid rgba(255,255,255,.08);
 }
@@ -56,8 +56,10 @@
 }
 
 .manager-modal__close{
-  width:44px;
-  height:44px;
+  width:100px;
+  height:40px;
+
+  max-width: 38px;
 
   border:none;
   border-radius:50%;
@@ -73,4 +75,10 @@
 
 .manager-modal__close:hover{
   background:#ff4b4b;
+}
+
+@media(min-width: 320px){
+  .manager-modal__body{
+    padding: 1rem;
+  }
 }
