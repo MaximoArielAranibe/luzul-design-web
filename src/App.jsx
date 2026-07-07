@@ -14,7 +14,7 @@ import Home from './components/Home';
 import ShowVideos from './components/ShowVideos';
 import LoginPage from './pages/LoginPage';
 import AdminPage from './pages/AdmingPage';
-
+import { Toaster } from "react-hot-toast";
 function App() {
   return (
     <AuthProvider>
@@ -57,6 +57,19 @@ function App() {
             }
           />
         </Routes>
+
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            duration: 2500,
+            style: {
+              background: "#181818",
+              color: "#fff",
+              border: "1px solid #d4af37",
+              borderRadius: "12px",
+            },
+          }}
+        />
       </BrowserRouter>
     </AuthProvider>
   );

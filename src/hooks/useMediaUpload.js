@@ -138,7 +138,7 @@ const useMediaUpload = () => {
         span: meta.span || "normal",
         type: isVideo ? "video" : "image",
         createdAt: serverTimestamp(),
-        order: Date.now
+        order: Date.now(),
       });
 
       setUploadState({

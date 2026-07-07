@@ -12,8 +12,24 @@ import AdminToolbar from "./AdminToolbar";
 import UploadModal from "./admin/UploadModal";
 import ManagerModal from "./admin/ManagerModal";
 import EditMediaModal from "./EditMediaModal";
-
+import MediaCard from "./MediaCard";
+import SortableMedia from "./SortableMediaCard";
 import "../styles/pages/ShowVideos.scss";
+
+import {
+  DndContext,
+  closestCenter,
+} from "@dnd-kit/core";
+
+import {
+  SortableContext,
+  rectSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+
+import toast from "react-hot-toast";
+
+import useMediaSort from "../hooks/useMediaSort";
 
 
 
@@ -33,18 +49,10 @@ const ShowVideos = () => {
   const [showManager, setShowManager] = useState(false);
   const [editingMedia, setEditingMedia] = useState(null);
   const [isSorting, setIsSorting] = useState(false);
+  const [sortedMedia, setSortedMedia] = useState([]);
+  const [savingOrder, setSavingOrder] = useState(false);
 
-  const media = firestoreItems.map((item) => ({
-    id: item.id,
-    firestoreId: item.id,
-    preview: item.url,
-    full: item.url,
-    title: item.title,
-    span: item.span || "normal",
-    isVideo: item.type === "video",
-  }));
-
-  const visibleMedia = media.slice(0, visibleCount);
+  const visibleMedia = sortedMedia.slice(0, visibleCount);
 
   const lastElementRef = useCallback(
     (node) => {
@@ -54,7 +62,7 @@ const ShowVideos = () => {
         (entries) => {
           if (entries[0].isIntersecting) {
             setVisibleCount((prev) =>
-              prev >= media.length ? prev : prev + 24
+              prev >= sortedMedia.length ? prev : prev + 24
             );
           }
         },
@@ -65,8 +73,26 @@ const ShowVideos = () => {
 
       if (node) observerRef.current.observe(node);
     },
-    [media.length]
+    [sortedMedia.length]
   );
+
+  const handleSaveSorting = async () => {
+    try {
+      setSavingOrder(true);
+
+      await saveOrder(sortedMedia);
+
+      toast.success("Orden guardado correctamente");
+
+      setIsSorting(false);
+    } catch (err) {
+      console.error(err);
+
+      toast.error("No se pudo guardar el orden");
+    } finally {
+      setSavingOrder(false);
+    }
+  };
 
   useEffect(() => {
     document.body.style.overflow = activeVideo ? "hidden" : "";
@@ -77,7 +103,7 @@ const ShowVideos = () => {
   }, [activeVideo]);
 
   useEffect(() => {
-    const videos = media.filter((item) => item.isVideo);
+    const videos = sortedMedia.filter((item) => item.isVideo);
 
     const current = videos[currentPreviewIndex];
 
@@ -100,7 +126,23 @@ const ShowVideos = () => {
     }, 3000);
 
     return () => clearTimeout(timeout);
-  }, [currentPreviewIndex, media]);
+  }, [currentPreviewIndex, sortedMedia]);
+
+
+  useEffect(() => {
+    setSortedMedia(
+      firestoreItems.map((item) => ({
+        id: item.id,
+        firestoreId: item.id,
+        preview: item.url,
+        full: item.url,
+        title: item.title,
+        span: item.span || "normal",
+        isVideo: item.type === "video",
+        order: item.order,
+      }))
+    );
+  }, [firestoreItems]);
 
   useEffect(() => {
     const handleEsc = (e) => {
@@ -122,6 +164,36 @@ const ShowVideos = () => {
     videoRefs.current[id]?.pause();
   }, []);
 
+  const { saveOrder } = useMediaSort();
+
+  const handleDragEnd = async ({ active, over }) => {
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = sortedMedia.findIndex(
+      (item) => item.id === active.id
+    );
+
+    const newIndex = sortedMedia.findIndex(
+      (item) => item.id === over.id
+    );
+
+    const newItems = arrayMove(
+      sortedMedia,
+      oldIndex,
+      newIndex
+    );
+
+    setSortedMedia(newItems);
+
+    try {
+      console.log(user);
+      console.log(user?.uid);
+      await saveOrder(newItems);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <section className="videos-section">
@@ -135,87 +207,49 @@ const ShowVideos = () => {
             onManage={() => setShowManager(true)}
             isSorting={isSorting}
             onToggleSorting={setIsSorting}
-            />
+            onSaveSorting={handleSaveSorting}
+            savingOrder={savingOrder}
+          />
         )}
 
-        <div className="videos-container">
-          {visibleMedia.map((mediaItem, index) => {
-            const isLast = index === visibleMedia.length - 1;
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={visibleMedia.map((item) => item.id)}
+            strategy={rectSortingStrategy}
+          >
+            <div className="videos-container">
+              {visibleMedia.map((mediaItem, index) => {
+                const isLast = index === visibleMedia.length - 1;
 
-            return (
-              <article
-                key={mediaItem.id}
-                ref={isLast ? lastElementRef : null}
-                className={`media-card ${mediaItem.span}`}
-                style={{ animationDelay: `${index * 0.12}s` }}
-                onMouseEnter={() =>
-                  mediaItem.isVideo && handleHoverPlay(mediaItem.id)
-                }
-                onMouseLeave={() =>
-                  mediaItem.isVideo && handleHoverPause(mediaItem.id)
-                }
-                onClick={() => setActiveVideo(mediaItem)}
-              >
-                {mediaItem.isVideo ? (
-                  <video
-                    ref={(el) => (videoRefs.current[mediaItem.id] = el)}
-                    src={mediaItem.preview}
-                    muted
-                    playsInline
-                    preload="metadata"
-                    loop
-                  />
-                ) : (
-                  <img
-                    src={mediaItem.preview}
-                    alt={mediaItem.title}
-                    loading="lazy"
-                  />
-                )}
-
-                <div className="media-overlay">
-                  <h3>{mediaItem.title}</h3>
-                </div>
-
-                {user && (
-                  <button
-                    className="edit-media-btn"
-
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setEditingMedia(mediaItem);
-                    }}
+                return (
+                  <SortableMedia
+                    key={mediaItem.id}
+                    id={mediaItem.id}
+                    disabled={!isSorting}
                   >
-                    ✏️
-                  </button>
-                )}
-
-
-                {user && (
-
-                  <button
-                    className="delete-media-btn"
-                    onClick={async (e) => {
-                      e.stopPropagation();
-
-                      if (
-                        !window.confirm(
-                          "¿Seguro que querés eliminar este archivo?"
-                        )
-                      ) {
-                        return;
-                      }
-
-                      await deleteMedia(mediaItem.firestoreId);
-                    }}
-                  >
-                    🗑
-                  </button>
-                )}
-              </article>
-            );
-          })}
-        </div>
+                    <MediaCard
+                      media={mediaItem}
+                      index={index}
+                      isLast={isLast}
+                      lastElementRef={lastElementRef}
+                      videoRefs={videoRefs}
+                      handleHoverPlay={handleHoverPlay}
+                      handleHoverPause={handleHoverPause}
+                      onOpen={setActiveVideo}
+                      onEdit={setEditingMedia}
+                      onDelete={deleteMedia}
+                      user={user}
+                      isSorting={isSorting}
+                    />
+                  </SortableMedia>
+                );
+              })}
+            </div>
+          </SortableContext>
+        </DndContext>
       </section>
 
       {activeVideo &&
