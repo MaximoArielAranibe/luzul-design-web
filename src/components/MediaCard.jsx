@@ -14,7 +14,8 @@ const MediaCard = ({
   user,
   isSorting,
   dragListeners,
-  dragAttributes
+  dragAttributes,
+  dragRef
 }) => {
   return (
     <article
@@ -57,6 +58,7 @@ const MediaCard = ({
 
       {isSorting && (
         <div
+        ref={dragRef}
           className="drag-handle"
           {...dragListeners}
           {...dragAttributes}

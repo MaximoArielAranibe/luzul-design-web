@@ -19,7 +19,6 @@ import "../styles/pages/ShowVideos.scss";
 import {
   DndContext,
   closestCenter,
-  PointerSensor,
   TouchSensor,
   MouseSensor,
   useSensor,

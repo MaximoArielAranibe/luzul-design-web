@@ -14,6 +14,7 @@ const SortableMediaCard = ({
     transform,
     transition,
     isDragging,
+    setActivatorNodeRef
   } = useSortable({
     id,
     disabled,
@@ -24,16 +25,20 @@ const SortableMediaCard = ({
     transition,
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 1000 : "auto",
+    width: "100%",
+    height: "100%",
   };
 
   return (
     <div
       ref={setNodeRef}
       style={style}
+      className="sortable-media"
     >
       {React.cloneElement(children, {
         dragListeners: listeners,
         dragAttributes: attributes,
+        dragRef: setActivatorNodeRef,
       })}
     </div>
   );
